@@ -2,7 +2,6 @@
 // Series of npm packages that we will use to give our server useful functionality
 
 const fs = require('fs');
-const path = require('path');
 const express = require('express');
 
 // Express Configuration
