@@ -13,38 +13,44 @@ module.exports = function(app) {
     
     // GET `/api/notes` - Should read the `db.json` file and return all saved notes as JSON. "/api/notes" is an arbitrary url placeholder for where to access saved notes.
 
-    function renderAllNotes(request, response) {
+    function renderAllNotes() {
         let allNotes =fs.readFileSync(path.join(__dirname, "../db/db.json"), { encoding:'utf8' });
-        console.log("Here are all the current notes written: \n", allNotes);
+        // console.log("Here are all the current notes written: \n", allNotes);
         return allNotes;        
     };
 
     // This logs which note the server recieved from the client ?
-    app.get('/api/notes/:note', function(request, response) {
-        let chosen = response.params.note;
-        console.log(chosen);
-    })
+    // app.get('/api/notes/:note', function(request, response) {
+    //     let chosen = response.params.note;
+    //     console.log(chosen);
+    // })
 
-    // This routes the note to the client
+    // This routes all the notes to the client
     app.get('/api/notes', function(request, response) {
         response.json(noteData);
     });
 
     // POST `/api/notes` - Should receive a new note to save on the request body (in JSON format) add it to the `db.json` file (as an object), and then return the new note to the client.
 
-    app.post('/api/notes', function(response, request) {
-        let noteInfo = response.body; //switched to request?
+    app.post('/api/notes', function(request, response) {
+        let noteInfo = request.body; 
         noteInfo.id = moment().format();
-        renderAllNotes();
         console.log("Here's info on your latest saved note: \n", noteInfo);
         noteData.push(noteInfo);
-        console.log("Here's the current collection of saved notes: \n", noteData);
-        request.json(true); //switched to request?
+        console.log("Here's the current array of saved notes: \n", noteData);
+        response.json(true); 
     });
 
-    // app.delete('/api/notes/:id', function(response, request) {
-        // renderAllNotes();
-    // });
+    app.delete('/api/notes/:id', function(request, response) {
+        let deletedId = request.params.id;
+        let index = noteData.findIndex((note) => note.id == deletedId);
+        //remove that object from the array based off the index determined above
+        noteData.splice(index, 1);
+        //not sure why we need this, but the script doesn't work without it
+        response.json({ ok: true });    
+
+        response.send("DELETED Note");
+    });
 };
 
 
