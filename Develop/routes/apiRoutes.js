@@ -13,11 +13,11 @@ module.exports = function(app) {
     
     // GET `/api/notes` - Should read the `db.json` file and return all saved notes as JSON. "/api/notes" is an arbitrary url placeholder for where to access saved notes.
 
-    function renderAllNotes() {
-        let allNotes =fs.readFileSync(path.join(__dirname, "../db/db.json"), { encoding:'utf8' });
-        // console.log("Here are all the current notes written: \n", allNotes);
-        return allNotes;        
-    };
+    // function renderAllNotes() {
+    //     let allNotes =fs.readFileSync(path.join(__dirname, "../db/db.json"), { encoding:'utf8' });
+    //     // console.log("Here are all the current notes written: \n", allNotes);
+    //     return allNotes;        
+    // };
 
     // This logs which note the server recieved from the client ?
     // app.get('/api/notes/:note', function(request, response) {
